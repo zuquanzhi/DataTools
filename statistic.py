@@ -72,12 +72,12 @@ def statistic(path):
             pbar.update(1)
             pbar.set_postfix({"总行数": total_lines})
     
-    # 打印详细统计结果
-    print("\n=== 详细统计结果 ===")
-    for txt_file, counts in file_counts.items():
-        print(f"\n文件: {txt_file}")
-        for label, count in sorted(counts.items()):
-            print(f"ID {label}: {count} 次")
+    # # 打印详细统计结果
+    # print("\n=== 详细统计结果 ===")
+    # for txt_file, counts in file_counts.items():
+    #     print(f"\n文件: {txt_file}")
+    #     for label, count in sorted(counts.items()):
+    #         print(f"ID {label}: {count} 次")
     
     # 打印总体统计结果
     print("\n=== 总体统计结果 ===")
