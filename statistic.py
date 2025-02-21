@@ -105,16 +105,21 @@ def save_statistics(stats, output_path, sort_by='id'):
             for label, count in sorted_counts:
                 f.write(f"ID {label}: {count} 次\n")
 
-def get_default_output_path(input_path):
+def get_default_output_path(input_path, output_path):
     """生成默认的输出文件路径"""
     input_path = os.path.normpath(input_path)
-    if os.path.isfile(input_path):
-        dir_name = os.path.dirname(input_path)
-        base_name = os.path.basename(input_path)
-        name, _ = os.path.splitext(base_name)
-    else:
-        dir_name = input_path
-        name = os.path.basename(input_path)
+    # 检查输出路径是否存在，如果是文件夹，生成文件路径
+    if output_path:
+        if not os.path.exists(output_path):
+            os.makedirs(output_path, exist_ok=True)  # 如果文件夹不存在，创建它
+        base_name = os.path.basename(os.path.normpath(input_path))
+    
+        return os.path.join(output_path, f"{base_name}_stat.txt")
+    
+    # 如果未指定输出路径，默认生成同一目录下的stat.txt
+    dir_name = os.path.dirname(input_path)
+    base_name = os.path.basename(input_path)
+    name, _ = os.path.splitext(base_name)
     default_name = f"{name}_stat.txt"
     return os.path.join(dir_name, default_name)
 
@@ -132,8 +137,11 @@ def main():
         print(f"路径不存在: {args.input_path}")
         return
 
-    output_path = args.output if args.output else get_default_output_path(args.input_path)
+    # 获取输出路径
+    output_path = get_default_output_path(args.input_path, args.output)
+    print(f"输出路径: {output_path}")
     output_dir = os.path.dirname(output_path)
+    print(f"输出目录: {output_dir}")
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir, exist_ok=True)
 
